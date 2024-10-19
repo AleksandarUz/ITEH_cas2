@@ -59,7 +59,7 @@
                             <?php } ?>
                             ?>
                             <tr>
-                                <td colspan="5" class="text-center">Nema unetih kolokvijuma</td>
+                                <td colspan="5" class="text-center">Greska, nema unetih kolokvijuma</td>
                             </tr>
                         </tbody>
                     </table>
