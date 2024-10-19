@@ -1,23 +1,24 @@
-<?php
-
+<?php 
 class User{
     public $id;
     public $username;
     public $password;
-
-    public function __construct($id=null, $username=null, $password=null){
+    
+    //php manual - constructors and destructors
+    public function __construct($id = null, $username = null, $password = null)
+    {
         $this->id = $id;
-       $this->username = $username;
+        $this->username = $username;
         $this->password = $password;
     }
-
-    public static function logInUser($usr, mysqli $conn){
-        $query = "SELECT * FROM user WHERE username =$usr->username and password =$usr->password";
-
-        return true;
+    public static function logIn(User $user, mysqli $connect){
+        
+        //isključivo dvostruki navodnici
+        $query_string = "SELECT * FROM user WHERE username='$user->username' AND password='$user->password'";
+        //izvršavanje upita u bazi
+        return $connect->query($query_string);
+        
+        //return true;
     }
 }
-
-
-
 ?>

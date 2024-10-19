@@ -1,39 +1,33 @@
 <?php
-require "model/user.php";
+    // obrada Login funkcije
+    require 'dbBroker.php';
+    require 'model/user.php';
 
-session_start();
+    session_start();
 
-if (isset($_POST['username']) && isset($_POST['password'])){
-    $uname = $_POST['username'];
-    $upass = $_POST['password'];
+    if(isset($_POST['username']) && isset($_POST['password'])) {
+        $username_forma = $_POST['username'];
+        // echo $username_forma;
+        $password_forma = $_POST['password'];
+        $id_forma = 1;
 
-    $conn = new mysqli();
-    $korisnik = new User(null, $uname, $upass);
-    //$odg = $korisnik->logInUser($uname, $upass, $conn);
-    $odg = User::logInUser($korisnik, $conn);
+        $user = new User($id_forma, $username_forma, $password_forma);
+        $result = User::logIn($user, $conn);
 
+        // echo json_encode($result);
 
-    if ($odg){
-        echo `
-        <script>
-        console.log("Uspesno Prijavljivanje");
-        </script>
-        `;
-
-        $_SESSION['user_id'] = $korisnik->id;
-        header('Location: home.php');
-        exit();
-
-    }else{
-        echo `
-        <script>
-        console.log("Niste se prijavili");
-        </script>
-        `;
+        if($result->num_rows == 1) {
+            $_SESSION['user_id'] = $user->id;
+            header('Location: home.php');
+            exit();
+        }
+        else {
+            echo "Neuspesno logovanje";
+        }
     }
-}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
