@@ -32,7 +32,22 @@
             return $conn->query($query_str);
         }
 
+        public static function getById($id, $conn)
+{
+    $query = "SELECT * FROM prijava WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_assoc();
+}
 
+public static function update($id, $predmet, $katedra, $sala, $datum, $conn)
+{
+    $query = "UPDATE prijava SET predmet = ?, katedra = ?, sala = ?, datum = ? WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ssssi", $predmet, $katedra, $sala, $datum, $id);
+    return $stmt->execute();
+}
 }
 
 

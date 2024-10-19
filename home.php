@@ -179,24 +179,54 @@
     <script>
         // Omogućavanje dugmadi kada je selektovan radio button
         $('input[name="id_predmeta"]').on('change', function() {
-            $('#btn-izmeni').prop('disabled', false);
-            $('#btn-obrisi').prop('disabled', false);
+    $('#btn-izmeni').prop('disabled', false);
+    $('#btn-obrisi').prop('disabled', false);
 
-            let selectedRow = $(this).closest('tr');
+    let selectedRow = $(this).closest('tr');
 
-            let predmet = selectedRow.find('td:eq(0)').text();
-            let katedra = selectedRow.find('td:eq(1)').text();
-            let sala = selectedRow.find('td:eq(2)').text();
-            let datum = selectedRow.find('td:eq(3)').text();
+    let predmet = selectedRow.find('td:eq(0)').text();
+    let katedra = selectedRow.find('td:eq(1)').text();
+    let sala = selectedRow.find('td:eq(2)').text();
+    let datum = selectedRow.find('td:eq(3)').text();
+    let id = $(this).val();  // Preuzmi vrednost iz radio button-a (id predmeta)
 
-            // let id = $(this).val();
+    // Popunjavanje forme u modal-u sa preuzetim podacima
+    $('#id_predmeta').val(id);
+    $('#predmet').val(predmet);
+    $('#katedra').val(katedra);
+    $('#sala').val(sala);
+    $('#datum').val(datum);
+});
 
-            // $('#id_predmeta').val(id);
-            // $('#predmet').val(predmet);
-            // $('#katedra').val(katedra);
-            // $('#sala').val(sala);
-            // $('#datum').val(datum);
-        });
+// Skripta za slanje izmenjenih podataka na server za ažuriranje
+$('#btnIzmeniModal').on('click', function(event) {
+    event.preventDefault(); // Sprečava default akciju
+
+    let id = $('#id_predmeta').val();
+    let predmet = $('#predmet').val();
+    let katedra = $('#katedra').val();
+    let sala = $('#sala').val();
+    let datum = $('#datum').val();
+
+    $.ajax({
+        url: 'update.php',  // Putanja do fajla za update
+        method: 'POST',
+        data: {
+            id: id,
+            predmet: predmet,
+            katedra: katedra,
+            sala: sala,
+            datum: datum
+        },
+        success: function(response) {
+            alert("Prijava je uspešno ažurirana.");
+            location.reload();  // Osvežava stranicu kako bi se ažurirane vrednosti prikazale
+        },
+        error: function(xhr, status, error) {
+            alert("Greška prilikom ažuriranja prijave: " + xhr.responseText);
+        }
+    });
+});
     </script>
 </body>
 
